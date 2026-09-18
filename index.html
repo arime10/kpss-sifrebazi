@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPSS Şifrebazı - İnteraktif Hafıza Kartları ve Ezber Notları</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="KPSS Tarih, Coğrafya, Vatandaşlık ve Türkçe konularına ait tüm şifreler, kodlamalar ve hafıza teknikleri. İnteraktif kartlar ve test moduyla hızlı ezberleyin.">
+    <meta name="keywords" content="kpss şifreleri, kpss kodlamaları, kpss tarih kodlama, kpss coğrafya şifre, kpss vatandaşlık ezber, kpss türkçe hafıza kartı">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="brand-icon">🧠</span>
+                <span class="brand-text">KPSS Şifrebazı</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" id="btn-dashboard" onclick="switchMode('dashboard')">
+                    <span class="icon">🎴</span>
+                    <span class="text">Tüm Kartlar</span>
+                </button>
+                <button class="nav-btn" id="btn-study" onclick="switchMode('study')">
+                    <span class="icon">📖</span>
+                    <span class="text">Çalışma Odası</span>
+                </button>
+                <button class="nav-btn" id="btn-quiz" onclick="switchMode('quiz')">
+                    <span class="icon">🏆</span>
+                    <span class="text">Hafıza Testi</span>
+                </button>
+                <button class="nav-btn" id="btn-literature" onclick="switchMode('literature')">
+                    <span class="icon">📚</span>
+                    <span class="text">Edebi Eserler</span>
+                </button>
+                <button class="nav-btn" id="btn-history-guide" onclick="switchMode('history-guide')">
+                    <span class="icon">⏳</span>
+                    <span class="text">Tarih Rehberi</span>
+                </button>
+                <button class="nav-btn" id="btn-citizenship" onclick="switchMode('citizenship')">
+                    <span class="icon">📜</span>
+                    <span class="text">Vatandaşlık Sayısal</span>
+                </button>
+                <button class="nav-btn" id="btn-culture" onclick="switchMode('culture')">
+                    <span class="icon">🌐</span>
+                    <span class="text">Güncel Bilgiler</span>
+                </button>
+                <button class="nav-btn" id="btn-custom-notes" onclick="switchMode('custom-notes')">
+                    <span class="icon">⭐</span>
+                    <span class="text">ED10 Özel Notlar</span>
+                </button>
+                <button class="nav-btn" id="btn-exam-mock" onclick="switchMode('exam-mock')" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(16, 185, 129, 0.12)); border: 1px solid rgba(99, 102, 241, 0.35);">
+                    <span class="icon">📝</span>
+                    <span class="text" style="font-weight: 700; color: #818cf8;">KPSS Deneme Sınavı</span>
+                </button>
+                <button class="nav-btn" id="btn-favorites" onclick="switchMode('favorites')">
+                    <span class="icon">❤️</span>
+                    <span class="text">Favorilerim</span>
+                </button>
+            </nav>
+            <div class="theme-toggle-container">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Temayı değiştir">
+                    <span class="light-icon">☀️</span>
+                    <span class="dark-icon">🌙</span>
+                    <span class="theme-text">Koyu Tema</span>
+                </button>
+            </div>
+            <div class="sidebar-signature" style="text-align: center; margin-top: 2rem; padding: 1rem 0; border-top: 1px solid var(--border-color); opacity: 0.9;">
+                <span class="ed10-sig-badge" style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 900; letter-spacing: 2px; background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 0.4rem 0.9rem; border-radius: 12px; box-shadow: var(--shadow-md); cursor: default; display: inline-block;">★ ED10 ★</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="top-bar">
+                <div class="header-info">
+                    <h1 id="page-title">KPSS Hafıza Kartları</h1>
+                    <p id="page-desc">Tüm konulara ait kodlamalar ve hızlı ezber kartları.</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span class="ed10-sig-badge" style="font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 900; letter-spacing: 1.5px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; padding: 0.25rem 0.6rem; border-radius: 12px; box-shadow: var(--shadow-sm); cursor: default;">ED10</span>
+                    <div class="stats-badge">
+                        <span class="stats-icon">⚡</span>
+                        <span id="total-cards-count">0</span> Kart Hazır
+                    </div>
+                </div>
+            </header>
+
+            <!-- Mode: Dashboard -->
+            <section id="mode-dashboard" class="content-section active">
+                <!-- Filters & Search -->
+                <div class="controls-card">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="search-input" placeholder="Kodlama, konu veya kelime ara..." oninput="handleSearch()">
+                    </div>
+                    
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-category="all" onclick="filterCategory('all')">Hepsi</button>
+                        <button class="filter-tab" data-category="tarih" onclick="filterCategory('tarih')">Tarih 📚</button>
+                        <button class="filter-tab" data-category="cografya" onclick="filterCategory('cografya')">Coğrafya 🌍</button>
+                        <button class="filter-tab" data-category="vatandaslik" onclick="filterCategory('vatandaslik')">Vatandaşlık ⚖️</button>
+                        <button class="filter-tab" data-category="turkce" onclick="filterCategory('turkce')">Türkçe ✍️</button>
+                    </div>
+                </div>
+
+                <!-- Grid of Cards -->
+                <div class="cards-grid" id="cards-grid">
+                    <!-- Cards dynamically rendered here -->
+                </div>
+                
+                <!-- Empty state -->
+                <div id="no-results" class="empty-state hidden">
+                    <div class="empty-icon">🕵️‍♂️</div>
+                    <h3>Aradığınız kriterlere uygun şifre bulunamadı</h3>
+                    <p>Arama teriminizi kontrol edebilir veya farklı bir ders filtresi deneyebilirsiniz.</p>
+                </div>
+            </section>
+
+            <!-- Mode: Study (Carousel) -->
+            <section id="mode-study" class="content-section">
+                <div class="study-container">
+                    <div class="section-header">
+                        <h2>Sırasıyla Kart Çalış</h2>
+                        <p>Kartları yana kaydırarak ezber yeteneğinizi geliştirin. Üzerine tıklayarak açılımı görün.</p>
+                    </div>
+
+                    <div class="study-card-wrapper">
+                        <!-- Single study card container -->
+                        <div class="card-carousel-nav prev" onclick="studyPrevCard()">‹</div>
+                        
+                        <div class="study-card-outer">
+                            <div class="flashcard" id="study-flashcard" onclick="toggleCardFlip(this)">
+                                <div class="card-face card-front" id="study-front">
+                                    <!-- Front content dynamically inserted -->
+                                </div>
+                                <div class="card-face card-back" id="study-back">
+                                    <!-- Back content dynamically inserted -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-carousel-nav next" onclick="studyNextCard()">›</div>
+                    </div>
+
+                    <div class="study-progress-container">
+                        <div class="progress-bar-outer">
+                            <div class="progress-bar-inner" id="study-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="study-progress-text" id="study-progress-text">Kart: 0 / 0</div>
+                    </div>
+
+                    <div class="study-actions">
+                        <button class="study-action-btn secondary-btn" onclick="toggleFavoriteCurrentStudyCard()">
+                            <span id="study-fav-icon">🤍</span> Favorilere Ekle
+                        </button>
+                        <button class="study-action-btn primary-btn" onclick="studyNextCard()">Sonraki Kart</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode: Quiz -->
+            <section id="mode-quiz" class="content-section">
+                <div class="quiz-container">
+                    <!-- Setup State -->
+                    <div id="quiz-setup" class="quiz-setup-box">
+                        <h2>🧠 Hafıza Testi Antrenmanı</h2>
+                        <p>Şifreli KPSS kartları ile kendinizi sınayın. Kartın şifresini görünce açılımını hatırlamaya çalışın, ardından cevabı kontrol edin.</p>
+                        
+                        <div class="setup-options">
+                            <h3>Test Kapsamı Seçin:</h3>
+                            <div class="quiz-categories-grid">
+                                <label class="checkbox-card checked">
+                                    <input type="checkbox" id="quiz-cat-tarih" checked>
+                                    <span class="chk-label">Tarih 📚</span>
+                                </label>
+                                <label class="checkbox-card checked">
+                                    <input type="checkbox" id="quiz-cat-cografya" checked>
+                                    <span class="chk-label">Coğrafya 🌍</span>
+                                </label>
+                                <label class="checkbox-card checked">
+                                    <input type="checkbox" id="quiz-cat-vatandaslik" checked>
+                                    <span class="chk-label">Vatandaşlık ⚖️</span>
+                                </label>
+                                <label class="checkbox-card checked">
+                                    <input type="checkbox" id="quiz-cat-turkce" checked>
+                                    <span class="chk-label">Türkçe ✍️</span>
+                                </label>
+                            </div>
+
+                            <div class="quiz-limit-selector">
+                                <h3>Soru Sayısı:</h3>
+                                <div class="radio-group">
+                                    <label class="radio-btn"><input type="radio" name="quiz-limit" value="10" checked> 10 Soru</label>
+                                    <label class="radio-btn"><input type="radio" name="quiz-limit" value="20"> 20 Soru</label>
+                                    <label class="radio-btn"><input type="radio" name="quiz-limit" value="all"> Tüm Sorular</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="start-quiz-btn" onclick="startQuiz()">Testi Başlat 🚀</button>
+                    </div>
+
+                    <!-- Active Quiz State -->
+                    <div id="quiz-active" class="quiz-active-box hidden">
+                        <div class="quiz-header">
+                            <span class="quiz-q-num" id="quiz-question-number">Soru: 1 / 10</span>
+                            <div class="quiz-score-badge">
+                                Doğru: <span class="score-green" id="quiz-score-correct">0</span> | 
+                                Yanlış: <span class="score-red" id="quiz-score-incorrect">0</span>
+                            </div>
+                        </div>
+
+                        <div class="quiz-card-display">
+                            <div class="flashcard" id="quiz-flashcard" onclick="quizRevealAnswer()">
+                                <div class="card-face card-front" id="quiz-front">
+                                    <!-- Front content dynamically inserted -->
+                                </div>
+                                <div class="card-face card-back" id="quiz-back">
+                                    <!-- Back content dynamically inserted -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quiz-instruction-text" id="quiz-instruction">Açılımı hatırlamaya çalışın ve karta tıklayarak cevabı kontrol edin!</div>
+
+                        <!-- Buttons when answer not revealed yet -->
+                        <div class="quiz-actions" id="quiz-pre-reveal-actions">
+                            <button class="quiz-action-btn primary-btn large-btn" onclick="quizRevealAnswer()">Cevabı Gör 👁️</button>
+                        </div>
+
+                        <!-- Buttons when answer revealed -->
+                        <div class="quiz-actions hidden" id="quiz-post-reveal-actions">
+                            <button class="quiz-action-btn incorrect-btn" onclick="submitQuizAnswer(false)">❌ Hatırlayamadım</button>
+                            <button class="quiz-action-btn correct-btn" onclick="submitQuizAnswer(true)">✅ Hatırladım</button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Results State -->
+                    <div id="quiz-results" class="quiz-results-box hidden">
+                        <div class="results-icon">🎉</div>
+                        <h2>Hafıza Testi Tamamlandı!</h2>
+                        
+                        <div class="results-summary">
+                            <div class="result-stat-card">
+                                <span class="stat-num" id="res-score-pct">0%</span>
+                                <span class="stat-lbl">Başarı Oranı</span>
+                            </div>
+                            <div class="result-stat-card">
+                                <span class="stat-num text-success" id="res-score-correct">0</span>
+                                <span class="stat-lbl">Doğru Hatırlanan</span>
+                            </div>
+                            <div class="result-stat-card">
+                                <span class="stat-num text-danger" id="res-score-incorrect">0</span>
+                                <span class="stat-lbl">Hatırlanamayan</span>
+                            </div>
+                        </div>
+
+                        <div class="results-feedback" id="res-feedback-text">Tebrikler!</div>
+
+                        <div class="results-actions">
+                            <button class="results-btn secondary-btn" onclick="resetQuizSetup()">Yeni Test Ayarla</button>
+                            <button class="results-btn primary-btn" onclick="restartSameQuiz()">Aynı Testi Tekrarla</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode: Literature -->
+            <section id="mode-literature" class="content-section">
+                <div class="literature-container">
+                    <div class="section-header">
+                        <h2>Milli Mücadele Edebi Eserleri</h2>
+                        <p>KPSS Tarih sınavında sıkça sorulan yazar, eser ve kısa bilgiler.</p>
+                    </div>
+
+                    <!-- Toggle Sub-modes: List vs Match Game -->
+                    <div class="lit-tabs-container">
+                        <button class="lit-tab-btn active" id="lit-tab-list" onclick="toggleLitSubMode('list')">📚 Eser Listesi</button>
+                        <button class="lit-tab-btn" id="lit-tab-game" onclick="toggleLitSubMode('game')">🎮 Eşleştirme Oyunu</button>
+                    </div>
+
+                    <!-- Sub-mode: List -->
+                    <div id="lit-submode-list" class="lit-submode-content active">
+                        <div class="lit-search-container">
+                            <input type="text" id="lit-search-input" placeholder="Eser, yazar veya açıklama ara..." oninput="handleLitSearch()">
+                        </div>
+                        <div class="lit-cards-list" id="lit-cards-list">
+                            <!-- Literature cards dynamically rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Match Game -->
+                    <div id="lit-submode-game" class="lit-submode-content">
+                        <div class="game-instructions">
+                            <p>Soldaki <strong>Eserleri</strong> sağdaki doğru <strong>Yazarlarıyla</strong> eşleştirin. Seçmek için üzerlerine tıklayın.</p>
+                            <div class="game-score-board">
+                                Eşleşen: <span class="score-green" id="game-score-correct">0</span> / <span id="game-score-total">6</span>
+                            </div>
+                        </div>
+                        
+                        <div class="match-game-board">
+                            <div class="game-column" id="game-left-col">
+                                <!-- Left books cards -->
+                            </div>
+                            <div class="game-column" id="game-right-col">
+                                <!-- Right authors cards -->
+                            </div>
+                        </div>
+
+                        <div id="game-success-message" class="game-success-box hidden">
+                            <h3>🎉 Tebrikler! Tüm eşleştirmeleri başarıyla tamamladınız.</h3>
+                            <p>Milli Mücadele dönemi eserlerini ve yazarlarını başarıyla hafızanıza kaydettiniz.</p>
+                            <button class="results-btn primary-btn" onclick="startNewMatchGame()">Yeni Eşleştirme Seti 🔁</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode: Tarih Rehberi -->
+            <section id="mode-history-guide" class="content-section">
+                <div class="history-guide-container">
+                    <div class="section-header">
+                        <h2>Tarih Çalışma Rehberi</h2>
+                        <p>Zaman tüneli sıralama oyunu, Atatürk ilkeleri, Osmanlı Divan kadroları ve önemli terimler/defterler.</p>
+                    </div>
+
+                    <div class="lit-tabs-container">
+                        <button class="lit-tab-btn active" id="history-tab-timeline" onclick="toggleHistorySubMode('timeline')">⏳ Zaman Tüneli</button>
+                        <button class="lit-tab-btn" id="history-tab-principles" onclick="toggleHistorySubMode('principles')">⚖️ Atatürk İlkeleri</button>
+                        <button class="lit-tab-btn" id="history-tab-osmanli" onclick="toggleHistorySubMode('osmanli')">👑 Osmanlı Divanı</button>
+                        <button class="lit-tab-btn" id="history-tab-terms" onclick="toggleHistorySubMode('terms')">📝 Terimler & Defterler</button>
+                        <button class="lit-tab-btn" id="history-tab-reforms" onclick="toggleHistorySubMode('reforms')">🛠️ Islahatlar</button>
+                        <button class="lit-tab-btn" id="history-tab-emperors" onclick="toggleHistorySubMode('emperors')">📖 Padişahlar & Olaylar</button>
+                        <button class="lit-tab-btn" id="history-tab-sultan-quiz" onclick="toggleHistorySubMode('sultan-quiz')">🎯 Padişahını Seç</button>
+                    </div>
+
+                    <!-- Sub-mode: Zaman Tüneli -->
+                    <div id="history-submode-timeline" class="lit-submode-content active">
+                        <div class="quiz-container">
+                            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                                Aşağıdaki 5 tarihi gelişmeyi <strong>kronolojik (eskiden yeniye)</strong> olarak sırayla tıklayarak sıralayın!
+                            </p>
+                            <div class="game-era-title" id="timeline-game-era" style="text-align: center; font-weight: bold; font-size: 1rem; color: var(--color-tarih); margin-bottom: 1.5rem; padding: 0.5rem; background-color: var(--bg-secondary); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+                                Dönem: Yükleniyor...
+                            </div>
+                            <div class="quiz-setup-box">
+                                <div class="game-instructions" style="margin-bottom: 1.5rem; justify-content: center; padding: 0.75rem;">
+                                    <span class="score-green" style="font-weight:700;" id="timeline-instructions">Sıradaki en eski olayı seçin.</span>
+                                </div>
+
+                                <div class="timeline-game-list" id="timeline-events-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                    <!-- Event cards rendered here -->
+                                </div>
+
+                                <div id="timeline-success-message" class="game-success-box hidden" style="margin-top: 0;">
+                                    <h3>🎉 Tebrikler! Doğru sıralama yapıldı.</h3>
+                                    <p>Olayların tarihleri başarıyla dizildi.</p>
+                                    <button class="results-btn primary-btn" onclick="startNewTimelineGame()">Yeni Sıralama Seti 🔁</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Atatürk İlkeleri -->
+                    <div id="history-submode-principles" class="lit-submode-content">
+                        <div class="quiz-container">
+                            <div class="quiz-setup-box" id="principles-active">
+                                <div class="quiz-header" style="margin-bottom: 1rem;">
+                                    <span class="quiz-q-num" id="principles-q-num">Soru: 1 / 10</span>
+                                    <span class="quiz-score-badge">Skor: <span class="score-green" id="principles-score-correct">0</span> / 10</span>
+                                </div>
+
+                                <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 2rem; text-align: center; margin-bottom: 1.5rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
+                                    <h3 id="principles-question-text" style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-tarih);">Medeni Kanun'un Kabulü</h3>
+                                    <p id="principles-question-hint" style="font-size: 0.85rem; color: var(--text-secondary);"></p>
+                                </div>
+
+                                <div class="quiz-categories-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('Cumhuriyetçilik')">Cumhuriyetçilik</button>
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('Milliyetçilik')">Milliyetçilik</button>
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('Halkçılık')">Halkçılık</button>
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('Devletçilik')">Devletçilik</button>
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('Laiklik')">Laiklik</button>
+                                    <button class="results-btn secondary-btn" onclick="submitPrincipleAnswer('İnkılapçılık')">İnkılapçılık</button>
+                                </div>
+                            </div>
+
+                            <div class="quiz-results-box hidden" id="principles-results">
+                                <div class="results-icon">⚖️</div>
+                                <h2>İlkeler Testi Tamamlandı!</h2>
+                                <div class="results-summary">
+                                    <div class="result-stat-card">
+                                        <span class="stat-num" id="principles-res-pct">0%</span>
+                                        <span class="stat-lbl">Başarı Oranı</span>
+                                    </div>
+                                    <div class="result-stat-card">
+                                        <span class="stat-num text-success" id="principles-res-correct">0</span>
+                                        <span class="stat-lbl">Doğru</span>
+                                    </div>
+                                </div>
+                                <div class="results-feedback" id="principles-res-feedback">Harika!</div>
+                                <button class="results-btn primary-btn" onclick="startPrinciplesQuiz()">Yeniden Başlat 🔁</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Osmanlı Divanı -->
+                    <div id="history-submode-osmanli" class="lit-submode-content">
+                        <div class="lit-tabs-container" style="box-shadow: none; background: none; padding: 0; margin-bottom: 1.5rem;">
+                            <button class="lit-tab-btn active" id="osmanli-tab-list" onclick="toggleOsmanliSubMode('list')">👑 Divan Kadrosu</button>
+                            <button class="lit-tab-btn" id="osmanli-tab-quiz" onclick="toggleOsmanliSubMode('quiz')">❓ Sınıflandırma Testi</button>
+                        </div>
+
+                        <!-- Sub-mode-content: List -->
+                        <div id="osmanli-submode-list" class="lit-submode-content active">
+                            <div class="lit-cards-list" id="osmanli-cards-list">
+                                <!-- Divan cards dynamically rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Sub-mode-content: Quiz -->
+                        <div id="osmanli-submode-quiz" class="lit-submode-content">
+                            <div class="quiz-setup-box">
+                                <div class="quiz-header" style="margin-bottom: 1rem;">
+                                    <span class="quiz-q-num" id="osmanli-q-num">Soru: 1 / 10</span>
+                                    <span class="quiz-score-badge">Skor: <span class="score-green" id="osmanli-score-correct">0</span> / 10</span>
+                                </div>
+
+                                <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+                                    <h3 id="osmanli-question-text" style="font-family: var(--font-heading); font-size: 1.25rem;">Kazasker hangi yönetim sınıfına aittir?</h3>
+                                </div>
+
+                                <div class="quiz-categories-grid" id="osmanli-options-grid" style="grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
+                                    <!-- Seyfiye, İlmiye, Kalemiye buttons -->
+                                </div>
+                                
+                                <div id="osmanli-explanation" class="lit-importance-box hidden" style="margin-top: 1rem; border-left-color: var(--color-tarih); background-color: rgba(245, 158, 11, 0.03);">
+                                    <!-- Explanation shows up here -->
+                                </div>
+                            </div>
+
+                            <div class="quiz-results-box hidden" id="osmanli-results">
+                                <div class="results-icon">👑</div>
+                                <h2>Osmanlı Divanı Testi Tamamlandı!</h2>
+                                <div class="results-summary">
+                                    <div class="result-stat-card">
+                                        <span class="stat-num" id="osmanli-res-pct">0%</span>
+                                        <span class="stat-lbl">Başarı Oranı</span>
+                                    </div>
+                                </div>
+                                <button class="results-btn primary-btn" onclick="startOsmanliQuiz()">Yeniden Başlat 🔁</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Terimler & Defterler -->
+                    <div id="history-submode-terms" class="lit-submode-content">
+                        <div class="lit-tabs-container" style="box-shadow: none; background: none; padding: 0; margin-bottom: 1.5rem;">
+                            <button class="lit-tab-btn active" id="terms-tab-list" onclick="toggleTermsSubMode('list')">📖 Terimler Listesi</button>
+                            <button class="lit-tab-btn" id="terms-tab-quiz" onclick="toggleTermsSubMode('quiz')">❓ Terim Testi</button>
+                        </div>
+
+                        <!-- Sub-mode-content: List -->
+                        <div id="terms-submode-list" class="lit-submode-content active">
+                            <div class="lit-cards-list" id="terms-cards-list">
+                                <!-- Terms cards dynamically rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Sub-mode-content: Quiz -->
+                        <div id="terms-submode-quiz" class="lit-submode-content">
+                            <div class="quiz-setup-box" id="terms-quiz-box">
+                                <div class="quiz-header" style="margin-bottom: 1rem;">
+                                    <span class="quiz-q-num" id="terms-q-num">Soru: 1 / 10</span>
+                                    <span class="quiz-score-badge">Skor: <span class="score-green" id="terms-score-correct">0</span> / 10</span>
+                                </div>
+
+                                <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+                                    <h3 id="terms-question-text" style="font-family: var(--font-heading); font-size: 1.25rem;">...</h3>
+                                </div>
+
+                                <div class="quiz-categories-grid" id="terms-options-grid" style="grid-template-columns: 1fr; gap: 0.75rem;">
+                                    <!-- Dynamic options -->
+                                </div>
+                                
+                                <div id="terms-explanation" class="lit-importance-box hidden" style="margin-top: 1rem; border-left-color: var(--color-tarih); background-color: rgba(245, 158, 11, 0.03);">
+                                    <!-- Explanation shows up here -->
+                                </div>
+                            </div>
+
+                            <div class="quiz-results-box hidden" id="terms-results">
+                                <div class="results-icon">📝</div>
+                                <h2>Terimler Testi Tamamlandı!</h2>
+                                <div class="results-summary">
+                                    <div class="result-stat-card">
+                                        <span class="stat-num" id="terms-res-pct">0%</span>
+                                        <span class="stat-lbl">Başarı Oranı</span>
+                                    </div>
+                                </div>
+                                <button class="results-btn primary-btn" onclick="startTermsQuiz()">Yeniden Başlat 🔁</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Islahatlar -->
+                    <div id="history-submode-reforms" class="lit-submode-content">
+                        <div class="lit-tabs-container" style="box-shadow: none; background: none; padding: 0; margin-bottom: 1.5rem;">
+                            <button class="lit-tab-btn active" id="reforms-tab-table" onclick="toggleReformsSubMode('table')">📊 Islahat Tablosu</button>
+                            <button class="lit-tab-btn" id="reforms-tab-match" onclick="toggleReformsSubMode('match')">⚔️ Eşleştirme Oyunu</button>
+                        </div>
+
+                        <!-- Reforms Sub-mode content: Table -->
+                        <div id="reforms-submode-table" class="lit-submode-content active">
+                            <div class="reforms-table-search-box" style="margin-bottom: 1.5rem; display: flex; gap: 0.75rem;">
+                                <input type="text" id="reforms-search-input" placeholder="Islahat veya padişah adı arayın..." oninput="handleReformsSearch()" style="flex: 1; padding: 0.65rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-size: 0.9rem; background-color: var(--bg-secondary); color: var(--text-primary);">
+                            </div>
+                            <div class="reforms-grid-container" id="reforms-grid-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+                                <!-- 4 Columns dynamically rendered -->
+                            </div>
+                        </div>
+
+                        <!-- Reforms Sub-mode content: Matching Game -->
+                        <div id="reforms-submode-match" class="lit-submode-content">
+                            <div class="quiz-container" style="max-width: 800px; margin: 0 auto;">
+                                <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                                    Sol taraftaki ıslahata tıklayıp sağ taraftan ait olduğu padişahı seçerek eşleştirin!
+                                </p>
+                                <div class="game-score-board" style="display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; margin-bottom: 1.5rem;">
+                                    <span class="game-score-badge" style="font-size: 0.9rem; color: var(--text-primary);">Doğru Eşleştirme: <span class="score-green" style="font-weight:700;" id="reforms-score-correct">0</span> / <span id="reforms-score-total">6</span></span>
+                                    <button class="results-btn secondary-btn" onclick="startNewReformsMatchGame()" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">Yeniden Başlat 🔁</button>
+                                </div>
+
+                                <div class="matching-game-area" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                    <!-- Left Column (Reforms) -->
+                                    <div class="game-column" id="reforms-match-left-col" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                        <!-- Reform names -->
+                                    </div>
+                                    <!-- Right Column (Sultans) -->
+                                    <div class="game-column" id="reforms-match-right-col" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                        <!-- II. Mahmut, Abdülmecit, Abdülaziz, II. Abdülhamit -->
+                                    </div>
+                                </div>
+
+                                <div id="reforms-match-success-message" class="game-success-box hidden" style="margin-top: 1.5rem;">
+                                    <h3>🎉 Tebrikler! Tüm Islahatları Başarıyla Eşleştirdiniz.</h3>
+                                    <p>Osmanlı modernleşme tarihindeki padişah-ıslahat ilişkisini pekiştirdiniz.</p>
+                                    <button class="results-btn primary-btn" onclick="startNewReformsMatchGame()">Yeni Eşleştirme Seti 🔁</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Padişahlar & Dönemler -->
+                    <div id="history-submode-emperors" class="lit-submode-content">
+                        <div class="quiz-container" style="max-width: 900px; margin: 0 auto; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg); padding: 2rem;">
+                            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                                Osmanlı padişahlarını dönemlerine göre filtreleyin ve önemli savaşları, olayları ve teşkilatlanma çalışmalarını inceleyin!
+                            </p>
+                            
+                            <div class="lit-tabs-container" id="emperors-era-filters" style="justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; background: none; box-shadow: none; padding: 0;">
+                                <button class="lit-tab-btn active" onclick="filterEmperorsEra('All', this)">📂 Tüm Dönemler</button>
+                                <button class="lit-tab-btn" onclick="filterEmperorsEra('Kuruluş', this)">🌅 Kuruluş (1299-1453)</button>
+                                <button class="lit-tab-btn" onclick="filterEmperorsEra('Yükselme', this)">☀️ Yükselme (1453-1579)</button>
+                                <button class="lit-tab-btn" onclick="filterEmperorsEra('Duraklama', this)">🍂 Duraklama (1579-1699)</button>
+                                <button class="lit-tab-btn" onclick="filterEmperorsEra('Gerileme', this)">❄️ Gerileme (1699-1792)</button>
+                                <button class="lit-tab-btn" onclick="filterEmperorsEra('Dağılma', this)">⚡ Dağılma & Çöküş (1792-1922)</button>
+                            </div>
+
+                            <div class="emperors-list-container" id="emperors-list-container" style="display: flex; flex-direction: column; gap: 1.5rem; max-height: 600px; overflow-y: auto; padding-right: 0.5rem;">
+                                <!-- Padişahlar ve Olayları dinamik olarak listelenecek -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Padişahını Seç (İlkler, Savaşlar & Yenilikler Testi) -->
+                    <div id="history-submode-sultan-quiz" class="lit-submode-content">
+                        <div class="quiz-container" style="max-width: 850px; margin: 0 auto;">
+                            <!-- Category Filter Tabs -->
+                            <div class="lit-tabs-container" id="sultan-quiz-category-filters" style="justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; background: none; box-shadow: none; padding: 0;">
+                                <button class="lit-tab-btn active" onclick="filterSultanQuizCategory('All', this)">📂 Tümü (Karışık)</button>
+                                <button class="lit-tab-btn" onclick="filterSultanQuizCategory('İlk & Teşkilatlanma', this)">🏛️ İlkler & Teşkilat</button>
+                                <button class="lit-tab-btn" onclick="filterSultanQuizCategory('Savaş & Olay', this)">⚔️ Savaşlar & Olaylar</button>
+                                <button class="lit-tab-btn" onclick="filterSultanQuizCategory('Islahat & Yenilik', this)">🛠️ Islahatlar & Yenilikler</button>
+                                <button class="lit-tab-btn" onclick="filterSultanQuizCategory('Antlaşma & Diplomasi', this)">📜 Antlaşmalar & Diplomasi</button>
+                            </div>
+
+                            <!-- Quiz Play Box -->
+                            <div class="quiz-setup-box" id="sultan-quiz-active-box">
+                                <div class="quiz-header" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                                    <span class="quiz-q-num" id="sultan-quiz-q-num" style="font-weight: 700; color: var(--color-tarih);">Soru: 1 / 15</span>
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <span class="quiz-score-badge">Doğru: <span class="score-green" id="sultan-quiz-score-correct">0</span></span>
+                                        <span class="quiz-score-badge">Yanlış: <span class="score-red" id="sultan-quiz-score-incorrect">0</span></span>
+                                    </div>
+                                </div>
+
+                                <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.75rem 1.5rem; text-align: center; margin-bottom: 1.5rem; min-height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.75rem;">
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                                        <span id="sultan-quiz-category-badge" style="font-size: 0.75rem; font-weight: 700; color: white; background-color: var(--color-tarih); padding: 0.2rem 0.6rem; border-radius: 9999px;">Kategori</span>
+                                        <span id="sultan-quiz-era-badge" style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: 9999px;">Dönem</span>
+                                    </div>
+                                    <h3 id="sultan-quiz-question-title" style="font-family: var(--font-heading); font-size: 1.3rem; color: var(--text-primary); line-height: 1.5; margin: 0.25rem 0;">Soru Yükleniyor...</h3>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">Bu gelişme / savaş / ilk hangi Osmanlı padişahı dönemine aittir?</p>
+                                </div>
+
+                                <div class="quiz-categories-grid" id="sultan-quiz-options-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                                    <!-- 4 Sultan Options Rendered Here -->
+                                </div>
+
+                                <div id="sultan-quiz-explanation" class="lit-importance-box hidden" style="margin-top: 1.25rem; border-left-color: var(--color-tarih); background-color: rgba(99, 102, 241, 0.04); padding: 1rem; border-radius: var(--border-radius-sm);">
+                                    <div id="sultan-quiz-feedback-text" style="font-size: 0.95rem; margin-bottom: 0.5rem;"></div>
+                                    <div id="sultan-quiz-info-text" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;"></div>
+                                    <div style="margin-top: 0.75rem; text-align: right;">
+                                        <button class="results-btn primary-btn" id="sultan-quiz-next-btn" onclick="nextSultanQuestion()" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Sonraki Soru ➡️</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quiz Results Box -->
+                            <div class="quiz-results-box hidden" id="sultan-quiz-results-box">
+                                <div class="results-icon">🎯</div>
+                                <h2>Padişahını Seç Testi Tamamlandı!</h2>
+                                <div class="results-summary">
+                                    <div class="result-stat-card">
+                                        <span class="stat-num" id="sultan-quiz-res-pct">0%</span>
+                                        <span class="stat-lbl">Başarı Oranı</span>
+                                    </div>
+                                    <div class="result-stat-card">
+                                        <span class="stat-num text-success" id="sultan-quiz-res-correct">0</span>
+                                        <span class="stat-lbl">Doğru</span>
+                                    </div>
+                                    <div class="result-stat-card">
+                                        <span class="stat-num text-danger" id="sultan-quiz-res-incorrect">0</span>
+                                        <span class="stat-lbl">Yanlış</span>
+                                    </div>
+                                </div>
+                                <div class="results-feedback" id="sultan-quiz-res-feedback">Harika bir sonuç!</div>
+                                <div style="display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
+                                    <button class="results-btn primary-btn" onclick="startSultanQuiz()">Yeniden Başlat 🔁</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode: Citizenship -->
+            <section id="mode-citizenship" class="content-section">
+                <div class="citizenship-container">
+                    <div class="section-header">
+                        <h2>Vatandaşlık Sayısal & Kurum Rehberi</h2>
+                        <p>Görev süreleri, yaş sınırları, üye sayıları ve kurum atamaları.</p>
+                    </div>
+
+                    <div class="lit-tabs-container">
+                        <button class="lit-tab-btn active" id="citizenship-tab-list" onclick="toggleCitizenshipSubMode('list')">📜 Bilgi Rehberi</button>
+                        <button class="lit-tab-btn" id="citizenship-tab-quiz" onclick="toggleCitizenshipSubMode('quiz')">❓ Sayısal & Atama Testi</button>
+                    </div>
+
+                    <!-- Sub-mode: List -->
+                    <div id="citizenship-submode-list" class="lit-submode-content active">
+                        <div class="lit-cards-list" id="citizenship-cards-list">
+                            <!-- Citizenship cards dynamically rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Quiz -->
+                    <div id="citizenship-submode-quiz" class="lit-submode-content">
+                        <div class="quiz-setup-box">
+                            <div class="quiz-header" style="margin-bottom: 1rem;">
+                                <span class="quiz-q-num" id="citizenship-q-num">Soru: 1 / 10</span>
+                                <span class="quiz-score-badge">Skor: <span class="score-green" id="citizenship-score-correct">0</span> / 10</span>
+                            </div>
+
+                            <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+                                <h3 id="citizenship-question-text" style="font-family: var(--font-heading); font-size: 1.25rem;">Cumhurbaşkanı seçilmek için en az kaç yaşında olmak gerekir?</h3>
+                            </div>
+
+                            <div class="quiz-categories-grid" id="citizenship-options-grid" style="grid-template-columns: 1fr; gap: 0.75rem;">
+                                <!-- Dynamic options -->
+                            </div>
+                        </div>
+
+                        <div class="quiz-results-box hidden" id="citizenship-results">
+                            <div class="results-icon">📜</div>
+                            <h2>Vatandaşlık Sayısal Testi Tamamlandı!</h2>
+                            <div class="results-summary">
+                                <div class="result-stat-card">
+                                    <span class="stat-num" id="citizenship-res-pct">0%</span>
+                                    <span class="stat-lbl">Başarı Oranı</span>
+                                </div>
+                            </div>
+                            <button class="results-btn primary-btn" onclick="startCitizenshipQuiz()">Yeniden Başlat 🔁</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </section>
+
+            <!-- Mode: Culture -->
+            <section id="mode-culture" class="content-section">
+                <div class="culture-container">
+                    <div class="section-header">
+                        <h2>Güncel Bilgiler & Genel Kültür</h2>
+                        <p>KPSS sınavında çıkan UNESCO mirasları, milli parklar ve güncel bilgileri çalışın.</p>
+                    </div>
+
+                    <div class="lit-tabs-container" style="justify-content: center;">
+                        <button class="lit-tab-btn active" id="culture-tab-unesco" onclick="toggleCultureTab('unesco')">🏛️ UNESCO Mirasları</button>
+                        <button class="lit-tab-btn" id="culture-tab-parks" onclick="toggleCultureTab('parks')">🏞️ Milli Parklar & Rekorlar</button>
+                        <button class="lit-tab-btn" id="culture-tab-orgs" onclick="toggleCultureTab('orgs')">🌐 Kuruluşlar & Genel Kültür</button>
+                    </div>
+
+                    <div class="lit-cards-list" id="culture-cards-list" style="margin-top: 1rem;">
+                        <!-- Culture Cards rendered dynamically -->
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+            <!-- Mode: Custom Notes (ED10 Özel Notlar) -->
+            <section id="mode-custom-notes" class="content-section">
+                <div class="custom-notes-container">
+                    <div class="section-header">
+                        <h2>⭐ ED10 Özel Ders Notlarım</h2>
+                        <p>Kendi eklediğiniz ders notları ve bu notlardan hazırlanan özel KPSS soru havuzları.</p>
+                    </div>
+
+                    <div class="lit-tabs-container">
+                        <button class="lit-tab-btn active" id="custom-notes-tab-list" onclick="toggleCustomNotesSubMode('list')">📝 Ders Notlarım</button>
+                        <button class="lit-tab-btn" id="custom-notes-tab-quiz" onclick="toggleCustomNotesSubMode('quiz')">❓ Özel Sorular Testi</button>
+                    </div>
+
+                    <!-- Sub-mode: List (Ders Notları Görünümü) -->
+                    <div id="custom-notes-submode-list" class="lit-submode-content active">
+                        <!-- Subject Selection Row -->
+                        <div class="lit-tabs-container" style="justify-content: center; gap: 1rem; margin-bottom: 1.5rem; background: none; box-shadow: none; padding: 0;">
+                            <button class="lit-tab-btn active" id="custom-notes-btn-subject-tarih" onclick="selectCustomNotesSubject('Tarih')">📜 Tarih Notları</button>
+                            <button class="lit-tab-btn" id="custom-notes-btn-subject-cografya" onclick="selectCustomNotesSubject('Coğrafya')">🌍 Coğrafya Notları</button>
+                            <button class="lit-tab-btn" id="custom-notes-btn-subject-vatandaslik" onclick="selectCustomNotesSubject('Vatandaşlık')">🏛️ Vatandaşlık Notları</button>
+                        </div>
+
+                        <!-- Search Box for Custom Notes -->
+                        <div style="margin-bottom: 1.25rem; display: flex; gap: 0.75rem;">
+                            <input type="text" id="custom-notes-search-input" placeholder="🔍 Ders notlarında ara (örn: İlteriş, Manas, Gulam, Abdülaziz, Narh...)" oninput="handleCustomNotesSearch()" style="flex: 1; padding: 0.65rem 1rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); font-size: 0.9rem; background-color: var(--bg-secondary); color: var(--text-primary);">
+                        </div>
+
+                        <!-- Category Filter Buttons -->
+                        <div class="lit-tabs-container" id="custom-notes-filters" style="justify-content: flex-start; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; background: none; padding: 0; box-shadow: none;">
+                            <!-- Filter buttons will be populated dynamically -->
+                        </div>
+                        
+                        <div class="lit-cards-list" id="custom-notes-cards-list">
+                            <!-- Custom notes cards dynamically rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Sub-mode: Quiz -->
+                    <div id="custom-notes-submode-quiz" class="lit-submode-content">
+                        <!-- Subject Selection Screen -->
+                        <!-- Subject Selection Screen -->
+                        <div id="custom-notes-quiz-selector" class="quiz-setup-box" style="text-align: center; padding: 2.5rem 1.5rem;">
+                            <div class="results-icon" style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 2s infinite;">⭐</div>
+                            <h3 style="font-family: var(--font-heading); margin-bottom: 0.75rem; color: var(--text-primary); font-size: 1.3rem;">Hangi Dersten Özel Test Çözmek İstersiniz?</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; max-width: 450px; margin-left: auto; margin-right: auto;">Soru çözmek istediğiniz dersi ve alt bölümleri seçip testi başlatın.</p>
+                            <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                                <button id="quiz-btn-tarih" class="results-btn primary-btn" style="background-color: transparent; border-color: var(--color-tarih); color: var(--color-tarih); padding: 0.85rem 1.75rem; font-size: 0.95rem; font-weight:700;" onclick="selectCustomQuizSubjectForSetup('Tarih')">📜 Tarih Testi</button>
+                                <button id="quiz-btn-cografya" class="results-btn primary-btn" style="background-color: transparent; border-color: var(--color-cografya); color: var(--color-cografya); padding: 0.85rem 1.75rem; font-size: 0.95rem; font-weight:700;" onclick="selectCustomQuizSubjectForSetup('Coğrafya')">🌍 Coğrafya Testi</button>
+                                <button id="quiz-btn-vatandaslik" class="results-btn primary-btn" style="background-color: transparent; border-color: var(--color-vatandaslik); color: var(--color-vatandaslik); padding: 0.85rem 1.75rem; font-size: 0.95rem; font-weight:700;" onclick="selectCustomQuizSubjectForSetup('Vatandaşlık')">🏛️ Vatandaşlık Testi</button>
+                            </div>
+
+                            <!-- Parts Selector Container -->
+                            <div id="custom-notes-quiz-parts-container" class="hidden" style="margin-top: 1.5rem; text-align: left; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                                <h4 style="font-family: var(--font-heading); margin-bottom: 0.75rem; color: var(--text-primary); font-size: 1.05rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;"><span id="parts-header-icon">📚</span> <span id="parts-header-text">Sınav Bölümleri Seçimi</span></h4>
+                                <div id="custom-notes-quiz-parts-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+                                    <!-- Dynamic part checkboxes -->
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="results-btn secondary-btn" style="font-size: 0.75rem; padding: 0.4rem 0.75rem;" onclick="toggleAllQuizParts(true)">Hepsini Seç</button>
+                                        <button class="results-btn secondary-btn" style="font-size: 0.75rem; padding: 0.4rem 0.75rem;" onclick="toggleAllQuizParts(false)">Temizle</button>
+                                    </div>
+                                    <button class="results-btn primary-btn" id="start-custom-quiz-btn" style="padding: 0.65rem 1.5rem; font-size: 0.9rem;" onclick="startCustomNotesQuizWithParts()">Sınavı Başlat 🚀</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Quiz Box -->
+                        <div class="quiz-setup-box hidden" id="custom-notes-quiz-play-box">
+                            <div class="quiz-header" style="margin-bottom: 1rem;">
+                                <span class="quiz-q-num" id="custom-notes-q-num">Soru: 1 / 15</span>
+                                <span class="quiz-score-badge">Skor: <span class="score-green" id="custom-notes-score-correct">0</span> / 15</span>
+                            </div>
+
+                            <div class="principles-card" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--border-radius-md); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+                                <h3 id="custom-notes-question-text" style="font-family: var(--font-heading); font-size: 1.25rem;">...</h3>
+                            </div>
+
+                            <div class="quiz-categories-grid" id="custom-notes-options-grid" style="grid-template-columns: 1fr; gap: 0.75rem;">
+                                <!-- Dynamic options -->
+                            </div>
+                            
+                            <div id="custom-notes-explanation" class="lit-importance-box hidden" style="margin-top: 1rem; border-left-color: var(--color-tarih); background-color: rgba(245, 158, 11, 0.03);">
+                                <!-- Explanation shows up here -->
+                            </div>
+                        </div>
+
+                        <!-- Results Box -->
+                        <div class="quiz-results-box hidden" id="custom-notes-results">
+                            <div class="results-icon" id="custom-notes-results-icon">⭐</div>
+                            <h2 id="custom-notes-results-title">Özel Notlar Testi Tamamlandı!</h2>
+                            <div class="results-summary">
+                                <div class="result-stat-card">
+                                    <span class="stat-num" id="custom-notes-res-pct">0%</span>
+                                    <span class="stat-lbl">Başarı Oranı</span>
+                                </div>
+                            </div>
+                            <button class="results-btn primary-btn" onclick="resetCustomNotesQuizSelection()">Başka Bir Sınav Çöz 🔁</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mode: Favorites -->
+            <section id="mode-favorites" class="content-section">
+                <!-- Grid of Favorites -->
+                <div class="cards-grid" id="favorites-grid">
+                    <!-- Favorite Cards dynamically rendered here -->
+                </div>
+                
+                <!-- Empty state -->
+                <div id="no-favorites" class="empty-state">
+                    <div class="empty-icon">💖</div>
+                    <h3>Henüz favori kartınız bulunmuyor</h3>
+                    <p>Çalışırken veya tüm kartlar listesindeyken zorlandığınız veya beğendiğiniz şifreleri kartın üzerindeki kalp butonuna basarak buraya ekleyebilirsiniz.</p>
+                    <button class="empty-action-btn" onclick="switchMode('dashboard')">Kartları İncele</button>
+                </div>
+            </section>
+            
+            <!-- Mode: KPSS Mock Exam (Genel Yetenek & Genel Kültür 120 Soru) -->
+            <section id="mode-exam-mock" class="content-section">
+                <div class="exam-mock-container">
+                    <!-- Sticky Exam Bar -->
+                    <div class="exam-sticky-bar">
+                        <div class="exam-bar-left">
+                            <div class="exam-timer-widget" id="exam-timer-display" title="Sınav Süresi (130 Dakika)">
+                                <span>⏱️</span>
+                                <span id="exam-timer-text">130:00</span>
+                            </div>
+                            <button class="exam-tool-btn" id="btn-exam-timer-toggle" onclick="toggleExamTimer()" title="Süreyi Duraklat / Başlat">
+                                <span id="exam-timer-icon">⏸️</span>
+                            </button>
+                        </div>
+
+                        <!-- Center: Drawing Toolbar -->
+                        <div class="exam-bar-center">
+                            <button class="exam-tool-btn active" id="btn-tool-select" onclick="setDrawingTool('select')" title="Tıklama / İşaretleme Modu (Cevap seçmek için)">
+                                <span>👆</span>
+                                <span>İşaretle</span>
+                            </button>
+                            <button class="exam-tool-btn" id="btn-tool-pen" onclick="setDrawingTool('pen')" title="Kalem (Karalama & Soru Çözümü)">
+                                <span>✏️</span>
+                                <span>Kalem</span>
+                            </button>
+                            <button class="exam-tool-btn" id="btn-tool-highlighter" onclick="setDrawingTool('highlighter')" title="Fosforlu Kalem (Önemli yerleri vurgula)">
+                                <span>🖍️</span>
+                                <span>Fosforlu</span>
+                            </button>
+                            <button class="exam-tool-btn" id="btn-tool-eraser" onclick="setDrawingTool('eraser')" title="Silgi (Çizimleri sil)">
+                                <span>🧹</span>
+                                <span>Silgi</span>
+                            </button>
+                            <button class="exam-tool-btn" onclick="clearCurrentPageDrawings()" title="Bu Sayfadaki Tüm Çizimleri Temizle">
+                                <span>🗑️</span>
+                                <span>Temizle</span>
+                            </button>
+
+                            <!-- Color Palette -->
+                            <div class="exam-draw-palette" id="exam-color-palette" title="Çizim Rengi">
+                                <span class="color-dot active" style="background-color: #1e293b;" onclick="setDrawColor('#1e293b', this)" title="Grafit Siyah"></span>
+                                <span class="color-dot" style="background-color: #ef4444;" onclick="setDrawColor('#ef4444', this)" title="Kırmızı"></span>
+                                <span class="color-dot" style="background-color: #3b82f6;" onclick="setDrawColor('#3b82f6', this)" title="Mavi"></span>
+                                <span class="color-dot" style="background-color: #eab308;" onclick="setDrawColor('#eab308', this)" title="Fosforlu Sarı"></span>
+                            </div>
+
+                            <!-- Thickness Selector -->
+                            <select id="exam-line-width" onchange="setLineWidth(this.value)" class="exam-tool-btn" style="padding: 0.35rem; font-size: 0.8rem;" title="Çizgi Kalınlığı">
+                                <option value="2">2px (İnce)</option>
+                                <option value="4" selected>4px (Orta)</option>
+                                <option value="8">8px (Kalın)</option>
+                                <option value="16">16px (Geniş)</option>
+                            </select>
+                        </div>
+
+                        <!-- Right: Actions -->
+                        <div class="exam-bar-right">
+                            <button class="exam-tool-btn" id="btn-toggle-optical" onclick="toggleOpticalDrawer()" style="background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none;" title="Optik Cevap Kağıdını Aç">
+                                <span>📝</span>
+                                <span>Optik Form</span>
+                                <span id="optical-badge-count" style="background: rgba(255,255,255,0.25); padding: 0.1rem 0.4rem; border-radius: 10px; font-size: 0.75rem; margin-left: 0.2rem;">0/120</span>
+                            </button>
+                            <button class="exam-tool-btn" onclick="confirmFinishExam()" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; font-weight: 700;" title="Sınavı Tamamla ve Netleri Gör">
+                                <span>🏁</span>
+                                <span>Sınavı Bitir</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject Quick Filter Tabs -->
+                    <div class="exam-section-tabs">
+                        <button class="exam-sec-tab active" onclick="filterExamPageBySubject('all')">Tüm Kitapçık (120 Soru)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('turkce')">✍️ Türkçe (1-30)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('matematik')">📐 Matematik (31-60)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('tarih')">⏳ Tarih (61-87)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('cografya')">🌍 Coğrafya (88-105)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('vatandaslik')">📜 Vatandaşlık (106-114)</button>
+                        <button class="exam-sec-tab" onclick="filterExamPageBySubject('guncel')">🌐 Güncel Bilgiler (115-120)</button>
+                    </div>
+
+                    <!-- Booklet Paper Container -->
+                    <div class="exam-booklet-paper" id="exam-booklet-paper">
+                        <!-- Top Official Booklet Header -->
+                        <div class="exam-paper-header">
+                            <div class="osym-logo-text">
+                                <span style="font-size: 1.3rem;">🇹🇷</span>
+                                <span>ÖSYM • KPSS GENEL YETENEK & GENEL KÜLTÜR DENEME SINAVI</span>
+                            </div>
+                            <div id="exam-page-indicator" style="font-family: 'Outfit', sans-serif; font-weight: 800;">
+                                SAYFA <span id="current-page-num">1</span> / <span id="total-pages-num">15</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Two-Column Question Layout with Canvas Overlay -->
+                        <div style="position: relative;" id="exam-canvas-container">
+                            <div class="exam-two-columns" id="exam-questions-grid">
+                                <!-- Dynamic questions rendered into Column 1 and Column 2 -->
+                            </div>
+                            <!-- Transparent Drawing Canvas Layer -->
+                            <canvas id="exam-drawing-canvas" class="exam-page-canvas"></canvas>
+                        </div>
+
+                        <!-- Page Navigation Controls Footer -->
+                        <div class="exam-page-nav-footer">
+                            <button class="exam-tool-btn" id="btn-prev-page" onclick="changeExamPage(-1)">
+                                <span>◀</span>
+                                <span>Önceki Sayfa</span>
+                            </button>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600;">
+                                <span>Sayfaya Git:</span>
+                                <select id="exam-page-select" onchange="goToExamPage(parseInt(this.value))" class="exam-tool-btn" style="padding: 0.35rem 0.6rem;">
+                                    <!-- Page options dynamically created -->
+                                </select>
+                            </div>
+                            <button class="exam-tool-btn" id="btn-next-page" onclick="changeExamPage(1)">
+                                <span>Sonraki Sayfa</span>
+                                <span>▶</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optical Answer Sheet Drawer -->
+                <div class="exam-optical-drawer" id="exam-optical-drawer">
+                    <div class="exam-optical-header">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.25rem;">📝</span>
+                            <div>
+                                <h3 style="font-size: 1rem; margin: 0; font-family: var(--font-heading);">CEVAP KAĞIDI (OPTİK FORM)</h3>
+                                <p style="font-size: 0.75rem; margin: 0; color: var(--text-secondary);">120 Soru • 5 Seçenek (A-E)</p>
+                            </div>
+                        </div>
+                        <button class="exam-tool-btn" onclick="toggleOpticalDrawer()" style="padding: 0.3rem 0.6rem;">✕ Kapat</button>
+                    </div>
+                    <div class="exam-optical-body" id="exam-optical-body">
+                        <!-- 4 Subject Groups filled dynamically -->
+                    </div>
+                </div>
+
+                <!-- Results & Answer Key Modal -->
+                <div class="exam-results-modal hidden" id="exam-results-modal">
+                    <div class="exam-results-card">
+                        <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="font-size: 2rem;">🏆</span>
+                                <div>
+                                    <h2 style="font-family: var(--font-heading); margin: 0; font-size: 1.4rem;">KPSS Deneme Sınavı Karnesi</h2>
+                                    <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Genel Yetenek & Genel Kültür Net ve Başarı Raporu</p>
+                                </div>
+                            </div>
+                            <button class="exam-tool-btn" onclick="closeExamResultsModal()" style="padding: 0.35rem 0.75rem;">✕ Kapat</button>
+                        </div>
+
+                        <!-- Score Highlights -->
+                        <div class="results-score-grid">
+                            <div class="score-card" style="border-top: 4px solid #6366f1;">
+                                <div class="score-val" id="res-total-net" style="color: #6366f1;">0.00</div>
+                                <div class="score-lbl">Toplam Net (D - Y/4)</div>
+                            </div>
+                            <div class="score-card" style="border-top: 4px solid #10b981;">
+                                <div class="score-val" id="res-correct-count" style="color: #10b981;">0</div>
+                                <div class="score-lbl">Doğru Sayısı</div>
+                            </div>
+                            <div class="score-card" style="border-top: 4px solid #ef4444;">
+                                <div class="score-val" id="res-incorrect-count" style="color: #ef4444;">0</div>
+                                <div class="score-lbl">Yanlış Sayısı</div>
+                            </div>
+                            <div class="score-card" style="border-top: 4px solid #f59e0b;">
+                                <div class="score-val" id="res-empty-count" style="color: #f59e0b;">120</div>
+                                <div class="score-lbl">Boş Soru</div>
+                            </div>
+                            <div class="score-card" style="border-top: 4px solid #8b5cf6;">
+                                <div class="score-val" id="res-estimated-score" style="color: #8b5cf6;">0.0</div>
+                                <div class="score-lbl">Tahmini KPSS Puanı (P3 / P93)</div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Subject Net Table -->
+                        <div>
+                            <h3 style="font-size: 1.05rem; margin-bottom: 0.5rem; font-family: var(--font-heading);">📊 Derslere Göre Dağılım ve Net Tablosu</h3>
+                            <table class="exam-net-table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">Ders Adı</th>
+                                        <th>Soru</th>
+                                        <th>Doğru</th>
+                                        <th>Yanlış</th>
+                                        <th>Boş</th>
+                                        <th>Net</th>
+                                        <th>Başarı %</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="exam-net-table-body">
+                                    <!-- Dynamic rows for Türkçe, Matematik, Tarih, Coğrafya, Vatandaşlık, Güncel -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Answer Key 1-120 Grid -->
+                        <div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <h3 style="font-size: 1.05rem; margin: 0; font-family: var(--font-heading);">🔑 1-120 Soru Cevap Anahtarı</h3>
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">Yeşil: Doğru • Kırmızı: Yanlış • Gri: Boş</span>
+                            </div>
+                            <div class="exam-answer-key-grid" id="exam-answer-key-grid">
+                                <!-- 120 items rendered here -->
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                            <button class="results-btn secondary-btn" onclick="reviewExamQuestions()">
+                                <span>📖</span>
+                                <span>Soruları ve Detaylı Çözümleri İncele</span>
+                            </button>
+                            <button class="results-btn primary-btn" onclick="restartExamMock()">
+                                <span>🔄</span>
+                                <span>Sınavı Yeniden Başlat</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Signature -->
+            <footer style="text-align: center; padding: 1.5rem 0; border-top: 1px solid var(--border-color); margin-top: 3rem; color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; opacity: 0.8;">
+                <span>ED10 KPSS Çalışma İstasyonu © 2026</span>
+                <span>•</span>
+                <span class="ed10-sig" style="font-family: 'Montserrat', sans-serif; font-weight: 900; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;">ED10 Studio</span>
+            </footer>
+        </main>
+    </div>
+
+    <!-- JavaScript Source -->
+    <script src="deneme_data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
