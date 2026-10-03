@@ -1,0 +1,4 @@
+.netlify/
+.vscode/
+.idea/
+*.log
