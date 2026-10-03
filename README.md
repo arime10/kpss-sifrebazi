@@ -84,14 +84,6 @@ Projeyi bilgisayarınızda çalıştırmak için herhangi bir paket yöneticisin
 
 ---
 
-## 🌐 Netlify Üzerinde Yayınlama
-
-Projede `netlify.toml` dosyası hazır olarak bulunmaktadır:
-1. [Netlify](https://app.netlify.com)'a giriş yapın.
-2. **"Import an existing project"** diyerek GitHub deponuzu (`kpss-sifrebazi`) seçin.
-3. Otomatik olarak birkaç saniyede yayına girecektir.
-
----
 
 ## 👨‍💻 Geliştirici & Lisans
 * **Geliştirici:** [arime10](https://github.com/arime10) — **ED10 Studio**
